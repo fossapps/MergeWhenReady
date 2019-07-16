@@ -7,7 +7,7 @@
 [![dependencies Status](https://david-dm.org/fossapps/MergeWhenReady/status.svg)](https://david-dm.org/fossapps/MergeWhenReady)
 [![codecov](https://codecov.io/gh/fossapps/MergeWhenReady/branch/master/graph/badge.svg)](https://codecov.io/gh/fossapps/MergeWhenReady)
 
-Github app to run your issue body and pull request's body through handlebar to generate new bodies
+Github app to automatically merge your PRs when they're ready
 
 - Typescript 3.x
 - Automatically deploys to now.sh

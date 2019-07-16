@@ -1,6 +1,6 @@
 # Privacy Policy
 
-Nishchal Gautam ("Me", "Myself", and "I") built Handlebar Templates (the "app") as an Open Source GitHub App. This service is provided by myself and is intended for use as is.
+Nishchal Gautam ("Me", "Myself", and "I") built `Merge When Ready` (the "app") as an Open Source GitHub App. This service is provided by myself and is intended for use as is.
 
 This page is used to inform users ("you") regarding my policies with the collection, use, and disclosure of personal information if anyone decided to use this service.
 
@@ -12,8 +12,11 @@ When installing the the app you grant it access to the following three scopes
 
 1. **Read & write access to [pull requests] and [issues]**
 
-   The app simply runs handlebar templates with some variables given to us by github and updates body
+   The app simply listen for events from github, checks if PR is ready to be merged.
 
+2. **Read & write access to repository contents**
+
+    The app when detects PR is ready to merge, it issues a merge command
 
 ## Sharing of data with 3rd party services
 

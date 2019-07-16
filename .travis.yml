@@ -1,10 +1,13 @@
 dist: trusty
 language: node_js
+services: docker
+
 node_js:
-- "10"
+  - "12"
 
 before_install:
   - npm install -g greenkeeper-lockfile@1
+  - npm i @semantic-release/exec
 
 before_script: greenkeeper-lockfile-update
 
@@ -12,12 +15,8 @@ script:
   - npm run build -s
   - npm run test -s
   - npm run lint -s
+  - docker build . -t fossapps/merge-when-ready
+  - npx semantic-release
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
-
-deploy:
-  provider: script
-  script: "./scripts/deploy.sh"
-  skip_cleanup: true
-
