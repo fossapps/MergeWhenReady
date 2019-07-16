@@ -3,7 +3,7 @@
     "target": "ES5",
     "module": "commonjs",
     "esModuleInterop": true,
-    "lib": ["es5", "scripthost", "es6"],
+    "lib": ["es5", "scripthost", "es6", "es7"],
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "noUnusedLocals": true,

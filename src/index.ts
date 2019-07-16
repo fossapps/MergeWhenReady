@@ -6,7 +6,7 @@ const appConfig = getAppConfig();
 const probot = new Probot(appConfig);
 probot.load(App.handle);
 
-// probot.start();
+probot.start();
 
 // tslint:disable-next-line
-export = probot.server;
+// export = probot.server;

@@ -1,44 +1,40 @@
-import * as Webhooks from "@octokit/webhooks";
-import {Application, Context} from "probot";
-import {GithubIssueHelper, IGithubIssueHelper} from "./GithubIssueHelper";
-import {IPayloadHelper, PayloadHelper} from "./PayloadHelper";
+import {Application} from "probot";
+import {CheckrunHandler} from "./CheckrunHandler";
+import {LabelHelper} from "./LabelHelper";
+import {NewRepoHandler} from "./NewRepoHandler";
+import {PullRepository} from "./PullRepository";
+import {PullRequestHandler} from "./PullRequestHandler";
+import {PullRequestMergeService} from "./PullRequestMergeService";
 
-export type TData = Webhooks.WebhookPayloadPullRequest | Webhooks.WebhookPayloadIssues;
-
+// tslint:disable-next-line:no-unnecessary-class
 export class App {
-    constructor(private ghHelper: IGithubIssueHelper, private payloadHelper: IPayloadHelper, private context: Context<TData>) {
-    }
-
     public static handle(context: Application): void {
-        context.on(["pull_request.opened", "issues.opened", "issues.edited", "pull_request.edited"], App.handleEvent);
-    }
+        context.on("installation.created", async (c) => {
+            c.log.info(c.event);
+            const handler = new NewRepoHandler(new LabelHelper(c.github));
+            await handler.handleRepositories(c.payload.repositories);
+        });
 
-    private static handleEvent(context: Context<TData>): Promise<void> {
-        const app = new App(new GithubIssueHelper(context.github, PayloadHelper.isPr(context.payload)), new PayloadHelper(context), context);
-        return app.handleEvent();
-    }
+        context.on("repository", (c) => {
+            c.log.info(c.event);
+            const newRepoHandler = new NewRepoHandler(new LabelHelper(c.github));
+            return newRepoHandler.handle(c.repo());
+        });
 
-    private static getErrorComment(error: Error): string {
-        const message = (error.stack) ? error.stack!.split("\n").join("\n>") : error.toString();
-        return `## There was error processing your body
+        context.on("check_run.completed", async (c) => {
+            c.log.info(c.event);
+            const handler = new CheckrunHandler(new LabelHelper(c.github), new PullRepository(c.github, c.repo()), new PullRequestMergeService(c.github));
+            await handler.handle(c.payload.check_run.check_suite.pull_requests.map((x) => x.number));
+        });
 
-The exact error message is the following
-
-${message}
-
-This body won't be processed any further, please fix your template.
-`;
-    }
-
-    public async handleEvent(): Promise<void> {
-        try {
-            const newBody = this.payloadHelper.getNewBody();
-            await this.ghHelper.updateBody(this.context.issue({body: newBody}));
-            this.context.log.debug(`updated ${PayloadHelper.isPr(this.context.payload) ? "PR" : "issue"} body`);
-        } catch (e) {
-            this.context.log.info(`Error: ${e.toString()}`);
-            console.warn(`Error: ${e.toString()}`);
-            await this.ghHelper.comment(this.context.issue({body: App.getErrorComment(e)}));
-        }
+        context.on("pull_request", async (c) => {
+            c.log.info(c.event);
+            const prHandler = new PullRequestHandler(
+                new LabelHelper(c.github),
+                new PullRequestMergeService(c.github),
+                c.repo()
+            );
+            await prHandler.handle(c.payload.pull_request);
+        });
     }
 }

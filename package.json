@@ -1,5 +1,5 @@
 {
-  "name": "@fossapps/handlebars.templates",
+  "name": "@fossapps/mergewhenready",
   "description": "",
   "main": "./lib/index.js",
   "typings": "./lib/index",
@@ -8,10 +8,11 @@
   "license": "GPL",
   "repository": {
     "type": "git",
-    "url": "https://github.com/fossapps/Handlebars-Issue-and-Pull-Requests.git"
+    "url": "https://github.com/fossapps/MergeWhenReady.git"
   },
-  "homepage": "https://github.com/fossapps/Handlebars-Issue-and-Pull-Requests",
+  "homepage": "https://github.com/fossapps/MergeWhenReady",
   "dependencies": {
+    "autobind-decorator": "^2.4.0",
     "dotenv": "^8.0.0",
     "handlebars": "^4.1.2",
     "hbs": "^4.0.4",
@@ -40,8 +41,7 @@
     "build": "npm run clean && tsc -p .",
     "clean": "del-cli ./lib ./coverage",
     "lint": "tslint -t stylish --project tsconfig.json './src/**/*.ts'",
-    "lint:fix": "npm run lint -s -- --fix",
-    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
+    "lint:fix": "npm run lint -s -- --fix"
   },
   "jest": {
     "transform": {

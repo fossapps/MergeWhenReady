@@ -1,7 +1,6 @@
 {
   "version": 2,
-  "name": "handlebar-templates",
-  "alias": "ht",
+  "name": "merge-when-ready",
   "builds": [
     {
       "src": "/lib/index.js",
