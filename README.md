@@ -1,4 +1,4 @@
-# Handlebars-Issue-and-Pull-Requests
+# Merge When Ready
 
 [![Greenkeeper badge](https://badges.greenkeeper.io/fossapps/MergeWhenReady.svg)](https://greenkeeper.io/)
 [![Build Status](https://travis-ci.com/fossapps/MergeWhenReady.svg)](https://travis-ci.com/fossapps/MergeWhenReady)
