@@ -36,8 +36,7 @@ export class App {
             );
             await prHandler.handle(c.payload.pull_request);
             const handler = new CheckrunHandler(new LabelHelper(c.github), new PullRepository(c.github, c.repo()), new PullRequestMergeService(c.github));
-            await handler.handle(c.payload.check_run.check_suite.pull_requests.map((x: any) => x.number));
-
+            await handler.handle([c.payload.number]);
         });
     }
 }
